@@ -11,10 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,6 +19,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/users")
+@CrossOrigin
 public class AuthController {
 
     @Autowired
@@ -43,7 +41,7 @@ public class AuthController {
         );
 
         if (authentication.isAuthenticated()) {
-            json.put("user", authentication.getName());
+            json.put("username", authentication.getName());
             json.put("authorities", authentication.getAuthorities());
             json.put("token", tokenProvider.generateToken(user.getUsername(), userDao.findUserByUsername(user.getUsername()).getRole()));
             return new ResponseEntity<>(json, HttpStatus.OK);
