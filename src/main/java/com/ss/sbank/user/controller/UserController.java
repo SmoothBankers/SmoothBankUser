@@ -4,8 +4,10 @@ package com.ss.sbank.user.controller;
 
 import com.ss.sbank.user.dao.UserDao;
 
+import com.ss.sbank.user.entity.ProfileUser;
 import com.ss.sbank.user.entity.User;
 import com.ss.sbank.user.service.UserService;
+import org.apache.coyote.Response;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -38,6 +40,24 @@ public class UserController {
             return new ResponseEntity<>(userService.saveOrUpdate(user), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>("Username already in use!", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/users/{userId}")
+    @RolesAllowed("ROLE_USER")
+    public ResponseEntity<User> getUser(@PathVariable Integer userId) {
+        return new ResponseEntity<>(userService.findOne(userId), HttpStatus.OK);
+    }
+
+    @PutMapping("/users/{userId}")
+    @RolesAllowed("ROLE_USER")
+    public ResponseEntity<?> update(@PathVariable Integer userId, @RequestBody ProfileUser user) {
+        try {
+            User updatedUser = userService.update(userId, user);
+            return new ResponseEntity<User>(updatedUser, HttpStatus.OK);
+        }
+        catch (Exception ex) {
+            return new ResponseEntity<String>("Incorrect Password", HttpStatus.BAD_REQUEST);
         }
     }
 
