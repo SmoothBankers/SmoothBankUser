@@ -56,6 +56,20 @@ public class UserService {
         return userDao.findAll();
     }
 
+    public Collection<User> findAllUsers() {
+        UserRole role = new UserRole();
+        role.setId(2);
+
+        return userDao.findByRole(role);
+    }
+
+    public Collection<User> findAllAdmins() {
+        UserRole role = new UserRole();
+        role.setId(1);
+
+        return userDao.findByRole(role);
+    }
+
     public User findOne(Integer userId) {
         User user =  userDao.findById(userId).orElseThrow();
         user.setPassword(null);

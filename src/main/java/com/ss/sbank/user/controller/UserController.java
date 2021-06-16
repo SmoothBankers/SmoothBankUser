@@ -31,7 +31,13 @@ public class UserController {
     @GetMapping("/users")
     @RolesAllowed("ROLE_ADMIN")
     public ResponseEntity<Collection<User>> getAll() {
-        return new ResponseEntity<>(userService.findAll(), HttpStatus.OK);
+        return new ResponseEntity<>(userService.findAllUsers(), HttpStatus.OK);
+    }
+
+    @GetMapping("/admins")
+    @RolesAllowed("ROLE_ADMIN")
+    public ResponseEntity<Collection<User>> getAllAdmins() {
+        return new ResponseEntity<>(userService.findAllAdmins(), HttpStatus.OK);
     }
 
     @PostMapping("/users")
